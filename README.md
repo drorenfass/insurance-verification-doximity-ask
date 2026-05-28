@@ -4,6 +4,10 @@ A three-phase workflow for solo and small-group practices to automate insurance 
 
 Companion to the upcoming Doximity Op-Med article *"I Use Doximity Ask to Run My Practice With Zero Employees"* (link added when the article publishes) and the [Medium walkthrough with the prompt and scripts](https://medium.com/@orenfass/the-doximity-ask-prompt-that-verifies-my-patients-insurance-and-estimates-their-fees-yours-to-7cbb0d0b249e).
 
+## Disclaimer
+
+This post and any provided or linked code, handouts, instructions or lessons are shared for educational purposes only. They do not constitute medical, billing, legal, or financial advice. All code and prompts are provided for education only. AI-generated cost estimates can be wrong — verify against your fee schedule, the patient's eligibility data, and your in-house biller or billing consultant before relying on them for real billing. HIPAA compliance in your use, or adaptation of this workflow is your responsibility; please consult with your information technology specialist and compliance officer before considering any changes to your system. The fee schedule example contains illustrative placeholder values, not real contracted rates. The author is a practicing ophthalmologist sharing one example of his workflow, not providing professional advice for your practice.
+
 ## What's in this repo
 
 | File | What it is |

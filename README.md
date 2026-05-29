@@ -12,7 +12,7 @@ This post and any provided or linked code, handouts, instructions or lessons are
 
 | File | What it is |
 |---|---|
-| `1_Extract_Referrals_CSV.js` | Browser-console script that walks a ModMed referrals table and writes an Availity-formatted CSV. Adapt to your EMR with the AI Reference below. |
+| `1_Extract_Eligibility_Report.js` | Browser-console script that walks ModMed's Eligibility Report (Appt Flow → View Eligibility Report) and writes one Availity-formatted CSV per unique payer. Adapt to your EMR with the AI Reference below. |
 | `Availity_Batch_Upload_Template.csv` | The exact column format Availity Essentials expects for batch eligibility intake. |
 | `Sample_Availity_Output.csv` | A de-identified sample of what Availity returns after a batch run. Use this to test the prompt before running real data. |
 | `DoxGPT_Prompt_Template.md` | The Doximity Ask cost-estimate prompt with four clearly marked sections you customize for your practice. |

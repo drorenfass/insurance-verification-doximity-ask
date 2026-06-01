@@ -6,6 +6,26 @@
 // one CSV per unique payer, formatted for Availity Essentials
 // batch eligibility upload.
 //
+// ------------------------------------------------------------
+// DISCLAIMER — READ BEFORE USING
+// ------------------------------------------------------------
+// 1. NOT MEDICAL, LEGAL, OR FINANCIAL ADVICE. This script is
+//    provided for educational purposes only. AI-generated cost
+//    estimates downstream of this script can be wrong — verify
+//    all output with your biller before billing.
+//
+// 2. PHI RESPONSIBILITY STAYS WITH YOUR PRACTICE. All
+//    responsibility for protecting patient health information
+//    and complying with HIPAA, payer contracts, and applicable
+//    regulations remains with your practice. Do NOT install,
+//    modify, or run this script (or any modification of it) in
+//    your browser, EMR, clearinghouse account, or any other
+//    patient-facing system without first consulting an IT
+//    professional and legal counsel thoroughly versed in PHI
+//    protection and HIPAA compliance for your jurisdiction and
+//    your specific configuration.
+// ------------------------------------------------------------
+//
 // PREREQUISITES
 //   1. Be on the ModMed Eligibility Report page in Chrome.
 //      Path: Appt Flow → View Eligibility Report (badge link

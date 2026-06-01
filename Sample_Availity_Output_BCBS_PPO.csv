@@ -1,0 +1,8 @@
+last_name,first_name,dob,member_id,payer,member_status,plan_name,plan_type,group_number,copay_specialist,deductible_individual,deductible_remaining,oop_max_individual,oop_remaining,coinsurance_specialist_pct,coverage_in_network,prior_auth_required,prior_auth_notes,response_status
+DeIdentified-H,Patient-H,03/03/1971,B445566778,BCBS PPO,Active Coverage,BCBS Blue Choice PPO,PPO,GRP10987,50,3000.00,3000.00,8000.00,8000.00,20,Yes,No,None on file - early in plan year,Complete
+DeIdentified-I,Patient-I,07/22/1968,B987654321,BCBS PPO,Active Coverage,BCBS Blue Choice PPO,PPO,GRP10987,50,2500.00,1100.00,7500.00,5630.00,20,Yes,No,Deductible partially met,Complete
+DeIdentified-J,Patient-J,11/12/1975,B556677889,BCBS PPO,Active Coverage,BCBS Blue Choice PPO,PPO,GRP10987,50,3000.00,3000.00,8000.00,8000.00,20,Yes,Yes,Auth required for outpatient surgery (66984/66982),Complete
+DeIdentified-K,Patient-K,05/30/1962,B112233445,BCBS PPO,Active Coverage,BCBS Blue Choice PPO,PPO,GRP10987,50,2000.00,0.00,6500.00,4200.00,20,Yes,No,Deductible met,Complete
+DeIdentified-L,Patient-L,09/04/1948,B776655443,BCBS PPO,Active Coverage,BCBS Blue Choice PPO,PPO,GRP10987,50,2500.00,0.00,7500.00,250.00,20,Yes,No,OOP nearly met - low patient responsibility expected,Complete
+DeIdentified-M,Patient-M,02/15/1980,B889900112,BCBS PPO,Inactive,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,No,Unknown,Coverage terminated 04/30; reschedule after re-verification,Complete
+DeIdentified-N,Patient-N,12/04/1956,B334455667,BCBS PPO,Pending,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Pending - payer not yet responded

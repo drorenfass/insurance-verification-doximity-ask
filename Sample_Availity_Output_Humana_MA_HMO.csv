@@ -1,0 +1,7 @@
+last_name,first_name,dob,member_id,payer,member_status,plan_name,plan_type,group_number,copay_specialist,deductible_individual,deductible_remaining,oop_max_individual,oop_remaining,coinsurance_specialist_pct,coverage_in_network,prior_auth_required,prior_auth_notes,response_status
+DeIdentified-O,Patient-O,06/14/1957,H998877665,Humana,Active Coverage,Humana Gold Plus HMO,Medicare Advantage HMO,GRP77332,35,0.00,0.00,5000.00,4500.00,0,Yes,Auth Info Unknown,Verify with payer before scheduling outpatient surgery,Complete
+DeIdentified-P,Patient-P,09/08/1950,H334455667,Humana,Active Coverage,Humana Gold Plus HMO,Medicare Advantage HMO,GRP77332,0,0.00,0.00,4500.00,2100.00,0,Yes,No,Specialist copay $0 for in-network,Complete
+DeIdentified-Q,Patient-Q,12/22/1962,H556677889,Humana,Active Coverage,Humana Gold Plus HMO,Medicare Advantage HMO,GRP77332,45,500.00,500.00,5500.00,5500.00,0,Yes,No,PCP referral required - verify on file,Complete
+DeIdentified-R,Patient-R,02/19/1949,H776655443,Humana,Active Coverage,Humana Gold Plus HMO,Medicare Advantage HMO,GRP77332,35,750.00,500.00,5000.00,4500.00,0,Yes,No,Partial deductible remaining,Complete
+DeIdentified-S,Patient-S,07/04/1965,H889900112,Humana,Inactive,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,No,Unknown,Coverage terminated 05/15; reschedule after re-verification,Complete
+DeIdentified-T,Patient-T,11/30/1955,H112233445,Humana,Pending,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Pending - payer not yet responded

@@ -1,0 +1,8 @@
+last_name,first_name,dob,member_id,payer,member_status,plan_name,plan_type,group_number,copay_specialist,deductible_individual,deductible_remaining,oop_max_individual,oop_remaining,coinsurance_specialist_pct,coverage_in_network,prior_auth_required,prior_auth_notes,response_status
+DeIdentified-A,Patient-A,01/15/1962,W123456789,Medicare,Active Coverage,Medicare Part B,Medicare,N/A,0,257.00,257.00,N/A,N/A,20,Yes,No,None on file - early in plan year,Complete
+DeIdentified-B,Patient-B,07/22/1948,W987654321,Medicare,Active Coverage,Medicare Part B,Medicare,N/A,0,257.00,0.00,N/A,N/A,20,Yes,No,Deductible met,Complete
+DeIdentified-C,Patient-C,03/03/1955,W445566778,Medicare,Active Coverage,Medicare Part B + Plan G Supplement,Medicare + Medigap,N/A,0,257.00,0.00,N/A,N/A,0,Yes,No,Plan G covers Part B coinsurance after deductible,Complete
+DeIdentified-D,Patient-D,11/29/1951,W112233445,Medicare,Active Coverage,Medicare Part B + Plan F Supplement,Medicare + Medigap,N/A,0,257.00,257.00,N/A,N/A,0,Yes,No,Plan F covers Part B deductible and coinsurance,Complete
+DeIdentified-E,Patient-E,06/14/1944,W998877665,Medicare,Active Coverage,Medicare Part B,Medicare,N/A,0,257.00,150.00,N/A,N/A,20,Yes,No,Partial deductible remaining,Complete
+DeIdentified-F,Patient-F,09/08/1940,W334455667,Medicare,Inactive,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,No,Unknown,Coverage terminated 03/31; reschedule after re-verification,Complete
+DeIdentified-G,Patient-G,02/19/1959,W556677889,Medicare,Pending,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Pending - payer not yet responded

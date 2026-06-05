@@ -1,10 +1,10 @@
 // ============================================================
-// ModMed Eligibility Report -> Availity Batch CSV(s)
+// ModMed Eligibility Report -> Availity Batch Paste-Box (.txt)
 // ============================================================
 // Extracts patient demographics from the ModMed Eligibility
 // Report view (Appt Flow → View Eligibility Report) and writes
-// one CSV per unique payer, formatted for Availity Essentials
-// batch eligibility upload.
+// one plain-text file per unique payer, formatted for
+// Availity Essentials' batch eligibility paste box.
 //
 // ------------------------------------------------------------
 // DISCLAIMER — READ BEFORE USING
@@ -46,39 +46,46 @@
 //      session.
 //
 // OUTPUT
-//   Downloads ONE CSV per unique payer to your Downloads folder,
-//   each formatted for Availity batch eligibility intake:
+//   Downloads ONE plain-text file per unique payer to your
+//   Downloads folder. Each file contains ONLY the two fields
+//   Availity's batch paste box expects, no header row:
 //
-//     availity_<payer_slug>.csv
+//     availity_<payer_slug>.txt
 //
-//   Example: availity_medicare_of_texas.csv, availity_bcbs_ppo.csv
+//   Example contents (one line per patient):
+//     W123456789, 01/15/1962
+//     A987654321, 07/22/1948
+//     B445566778, 03/03/1971
 //
-//   Columns (Availity's required order):
-//     last_name, first_name, dob, member_id, payer, provider_npi
+//   Filename examples: availity_medicare.txt, availity_bcbs_ppo.txt
+//
+//   Workflow: open the file for the payer you're about to
+//   submit, Cmd+A → Cmd+C (or Ctrl+A → Ctrl+C), then paste into
+//   Availity's batch eligibility paste box for that payer.
+//   Because there's no header row, your select-all grabs only
+//   data lines — nothing to delete before submitting.
 //
 //   Why split by payer? Availity's batch endpoint runs one
-//   payer's roster at a time. Uploading mixed payers in one
-//   file forces Availity to reject the batch or process slowly.
-//   Splitting up front matches Availity's expected workflow.
+//   payer's roster at a time. Splitting up front matches
+//   Availity's expected workflow.
 //
 // HIPAA
 //   This script runs ENTIRELY in your local browser. No patient
-//   data is transmitted anywhere. The CSV(s) write to your local
-//   Downloads folder. The next step (Availity batch upload) is
-//   the first place PHI leaves your machine — and Availity is
+//   data is transmitted anywhere. The text files write to your
+//   local Downloads folder. The next step (Availity batch paste)
+//   is the first place PHI leaves your machine — and Availity is
 //   a HIPAA-covered vendor with a signed BAA.
 //
 // ADAPTING THIS SCRIPT
 //   If your EMR is not ModMed, paste this script + the companion
-//   AI Reference PDF into Claude or another modern AI. Tell it
-//   the name of your EMR and point at one row's DOM (right-click
-//   the row → Inspect → copy outer HTML). The AI can adapt the
-//   #reportTable selector and column-mapping logic to your tool.
+//   DoximityAsk_AI_to_AI_Guide.pdf into Claude or another modern
+//   AI. Tell it the name of your EMR and point at one row's DOM
+//   (right-click the row → Inspect → copy outer HTML). The AI
+//   can adapt the #reportTable selector and column-mapping
+//   logic to your tool.
 // ============================================================
 
 (function () {
-  var DEFAULT_NPI = '';   // Optional: set your provider NPI here, e.g. '1234567890'
-
   var table = document.querySelector('#reportTable');
   if (!table) {
     console.log('ERROR: Cannot find #reportTable. Are you on the Eligibility Report page (Appt Flow → View Eligibility Report)?');
@@ -91,7 +98,8 @@
     return;
   }
 
-  // Map columns by header text (Patient, Payer, Policy Number).
+  // Map columns by header text (Payer, Policy Number) and the
+  // Patient cell (used to extract DOB).
   var headerCells = table.querySelectorAll('thead th, thead td');
   var idx = {};
   headerCells.forEach(function (th, i) {
@@ -105,8 +113,12 @@
     console.log('ERROR: Could not locate the Patient column.');
     return;
   }
+  if (idx.policy === undefined) {
+    console.log('ERROR: Could not locate the Policy Number column.');
+    return;
+  }
 
-  // Collect rows, grouped by payer for separate Availity uploads.
+  // Collect rows, grouped by payer for separate Availity submissions.
   var groupedRows = {};
   var totalCount = 0, skipped = 0;
 
@@ -118,41 +130,26 @@
     if (!patientText) { skipped++; return; }
 
     // The Patient cell stacks name, DOB, MRN, PMS ID on separate
-    // lines. Take the first line for name; regex-match anywhere
-    // for DOB. This is robust to whatever separator the cell uses.
-    var firstLine = patientText.split(/[\n\r]/)[0].trim();
-    var commaPos = firstLine.indexOf(',');
-    var last  = commaPos >= 0 ? firstLine.slice(0, commaPos).trim() : firstLine;
-    var first = commaPos >= 0 ? firstLine.slice(commaPos + 1).trim().split(/\s+/)[0] : '';
-
+    // lines. Regex-match anywhere for DOB. Robust to whatever
+    // separator the cell uses.
     var dobMatch = patientText.match(/\d{1,2}\/\d{1,2}\/\d{4}/);
     var dob = dobMatch ? dobMatch[0] : '';
 
-    var member = idx.policy !== undefined && cells[idx.policy]
-      ? (cells[idx.policy].innerText || '').trim() : '';
+    var member = cells[idx.policy] ? (cells[idx.policy].innerText || '').trim() : '';
     var payer = idx.payer !== undefined && cells[idx.payer]
       ? (cells[idx.payer].innerText || '').trim() : '';
 
     if (!payer) payer = 'UNKNOWN';
+    if (!member || !dob) { skipped++; return; }
 
     if (!groupedRows[payer]) groupedRows[payer] = [];
-    groupedRows[payer].push({last: last, first: first, dob: dob, member: member, payer: payer});
+    groupedRows[payer].push({ member: member, dob: dob });
     totalCount++;
   });
 
   if (totalCount === 0) {
-    console.log('ERROR: 0 rows extracted. Skipped ' + skipped + ' empty rows.');
+    console.log('ERROR: 0 rows extracted. Skipped ' + skipped + ' rows missing member ID or DOB.');
     return;
-  }
-
-  // CSV-escape any field containing a comma or quote.
-  function esc(v) {
-    if (v == null) return '';
-    v = String(v).replace(/\r?\n/g, ' ').trim();
-    if (v.indexOf(',') !== -1 || v.indexOf('"') !== -1) {
-      return '"' + v.replace(/"/g, '""') + '"';
-    }
-    return v;
   }
 
   // Sanitize the payer name for use as a filename.
@@ -164,6 +161,9 @@
   console.log('=== EXTRACTION SUMMARY ===');
   console.log('Total patients: ' + totalCount);
   console.log('Distinct payers: ' + payers.length);
+  if (skipped > 0) {
+    console.log('Skipped rows (missing member ID or DOB): ' + skipped);
+  }
   payers.forEach(function (p) {
     console.log('  ' + p + ': ' + groupedRows[p].length + ' patient(s)');
   });
@@ -172,15 +172,16 @@
   // Stagger downloads by 300ms each to avoid Chrome's multi-download throttling.
   payers.forEach(function (payer, i) {
     setTimeout(function () {
-      var csv = 'last_name,first_name,dob,member_id,payer,provider_npi\n';
-      groupedRows[payer].forEach(function (r) {
-        csv += [esc(r.last), esc(r.first), esc(r.dob), esc(r.member), esc(r.payer), esc(DEFAULT_NPI)].join(',') + '\n';
-      });
+      // Plain-text output: one line per patient, "member_id, dob"
+      // No header row, so Cmd+A copy from the file grabs only data.
+      var lines = groupedRows[payer].map(function (r) {
+        return r.member + ', ' + r.dob;
+      }).join('\n') + '\n';
 
-      var blob = new Blob([csv], { type: 'text/csv' });
+      var blob = new Blob([lines], { type: 'text/plain' });
       var a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'availity_' + sanitize(payer) + '.csv';
+      a.download = 'availity_' + sanitize(payer) + '.txt';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -188,5 +189,5 @@
     }, i * 300);
   });
 
-  console.log('Next step: log into Availity Essentials and upload each CSV separately under Eligibility & Benefits → Batch.');
+  console.log('Next step: open each .txt file, Cmd+A (or Ctrl+A) to select all, Cmd+C / Ctrl+C to copy, and paste into Availity Essentials\' batch eligibility paste box for that payer (Patient Registration → Eligibility and Benefits → Batch).');
 })();

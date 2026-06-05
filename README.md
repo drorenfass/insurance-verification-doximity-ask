@@ -23,20 +23,21 @@ You only run the Setup Prompt once. Everything else is daily reuse of the saved 
 
 | File | What it is |
 |---|---|
-| `1_Extract_Eligibility_Report.js` | Browser-console script that walks ModMed's Eligibility Report (Appt Flow → View Eligibility Report) and writes one Availity-formatted CSV per unique payer. Adapt to your EMR with the AI Reference below. |
-| `Availity_Batch_Upload_Template.csv` | The exact column format Availity Essentials expects for batch eligibility intake. |
+| `1_Extract_Eligibility_Report.js` | Browser-console script that walks ModMed's Eligibility Report (Appt Flow → View Eligibility Report) and writes one plain-text file per unique payer, ready to paste into Availity's batch eligibility paste box. Adapt to your EMR with the AI-to-AI Guide below. |
+| `Availity_Batch_Upload_Template.txt` | The two-field format (`member_id, DOB`) Availity Essentials' batch eligibility paste box expects — one patient per line, no header row, one file per payer. |
 | `Sample_Availity_Output_Medicare.csv` | De-identified sample Availity response for a **traditional Medicare** batch — Active, Pending, Inactive, deductible variations, Plan G and Plan F Medigap edge cases. |
 | `Sample_Availity_Output_BCBS_PPO.csv` | De-identified sample Availity response for a **BCBS commercial PPO** batch — varied deductibles, auth-required edge case for outpatient surgery, OOP-nearly-met scenario, Pending, Inactive. |
 | `Sample_Availity_Output_Humana_MA_HMO.csv` | De-identified sample Availity response for a **Humana Medicare Advantage HMO** batch — Auth Info Unknown, PCP referral required, $0-copay scenarios, Pending, Inactive. |
-| `DoximityAsk_Setup_Prompt.md` | The Setup Prompt you paste into Doximity Ask once, with your raw fee schedule, to generate your personal Daily-Use Prompt. |
-| `Cost_Estimate_Tutorial.pdf` | Step-by-step human walkthrough of all three phases, including the one-time Setup → Daily-Use generation step. Start here. |
+| `DoximityAsk_Setup_Prompt.md / .pdf` | The Setup Prompt you paste into Doximity Ask once, with your raw fee schedule, to generate your personal Daily-Use Prompt. |
+| `Cost_Estimate_Tutorial.pdf` | Step-by-step human walkthrough of all three phases, including the one-time Setup → Daily-Use generation step. **Start here.** |
 | `DoximityAsk_AI_to_AI_Guide.pdf` | An **AI-to-AI guide** — paste this into Claude or another modern AI if your EMR / clearinghouse / LLM is different from the worked example. It hands the AI an architectural blueprint to adapt rather than asking it to invent one from scratch. |
+| `README.md / .pdf` | This document. |
 | `LICENSE` | MIT. |
 
 ## Quick start
 
 1. Read `Cost_Estimate_Tutorial.pdf` end to end.
-2. **One-time setup:** open `DoximityAsk_Setup_Prompt.md`, paste it into a fresh Doximity Ask session along with your raw fee schedule and practice details (name, specialty, city, state). Doximity Ask returns your populated Daily-Use Prompt. Save it somewhere you can reopen — Doximity Ask's Saved Prompts, a password manager, or a private encrypted note.
+2. **One-time setup:** open `DoximityAsk_Setup_Prompt.pdf` (or `.md`), paste the Setup Prompt block into a fresh Doximity Ask session along with your raw fee schedule and practice details (name, specialty, city, state). Doximity Ask returns your populated Daily-Use Prompt. Save it somewhere you can reopen — Doximity Ask's Saved Prompts, a password manager, or a private encrypted note.
 3. **Per-patient use:** in a fresh Doximity Ask session, paste your saved Daily-Use Prompt followed by a row from one of the `Sample_Availity_Output_*.csv` files (Medicare, BCBS PPO, or Humana MA HMO). Confirm the output shape looks right. Run a couple rows from each sample to exercise the different plan-type scenarios (auth required, Pending, Inactive, Medigap).
 4. Run on a real patient batch from your own EMR. Validate the first five outputs with your biller before relying on any of them for live collection.
 
@@ -48,7 +49,7 @@ If you do not use ModMed + Availity + Doximity Ask, paste `DoximityAsk_AI_to_AI_
 
 PHI in this workflow stays inside three BAA-covered vendors — your EMR, your clearinghouse (Availity in the worked example), and Doximity Ask. Do not paste Availity output into personal ChatGPT / Claude / Gemini / Grok accounts. Do not email Availity output through personal Gmail.
 
-The browser-console script in `1_Extract_Eligibility_Report.js` runs entirely on your local machine inside your already-logged-in EMR session — no PHI leaves your browser. The first place PHI moves off your machine is the Availity batch upload, which is BAA-covered.
+The browser-console script in `1_Extract_Eligibility_Report.js` runs entirely on your local machine inside your already-logged-in EMR session — no PHI leaves your browser. The first place PHI moves off your machine is the Availity batch paste, which is BAA-covered.
 
 ## License
 
